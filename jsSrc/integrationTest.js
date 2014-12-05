@@ -59,5 +59,23 @@ describe('Othello', function() {
 			assert.notOk(game.toBeContinued());
 		})
 	})
-	
+	describe("judge",function() {
+		describe("WHITE",function(){
+			it("should return W when there are more white discs than black discs", function() {
+				game.grid['[6,2]'].value = 'W';
+				assert.equal(game.declareWinner(),'W');
+			})
+		})
+		describe("BLACK",function(){
+			it("should return B when there are more black discs than white discs", function() {
+				game.grid['[6,2]'].value = 'B';
+				assert.equal(game.declareWinner(),'B');
+			})
+		})
+		describe("TIE",function(){
+			it("should return tie when there are equal number of black and white discs", function() {
+				assert.equal(game.declareWinner(),'tie');
+			})
+		})
+	})
 });

@@ -50,12 +50,24 @@ othello.prototype = {
 			this.changePlayer();
 		}
 	},
-	toBeContinued : function (){
+	toBeContinued : function() {
 		var game = this;
 		var possibility = game.allIds.some(function(id){
 			return game.isValidMove(id,game);
 		});
 		return possibility;
+	},
+	declareWinner : function() {
+		var game = this;
+		var whites = allIds.reduce(function(carry,id){
+			game.grid[id].value == 'W' && carry++;
+			return carry;
+		},0);
+		var blacks = allIds.reduce(function(carry,id){
+			game.grid[id].value == 'B' && carry++;
+			return carry;
+		},0)
+		return (blacks > whites) ? "B" : (whites > blacks) ? "W" : "tie";
 	}
 };
 
