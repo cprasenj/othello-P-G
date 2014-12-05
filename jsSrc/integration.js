@@ -1,12 +1,16 @@
 var createGrid = require('./createGrid.js').createGrid;
 var lib = require('./lib.js').lib;
 var data = require('./data.js');
-var allIds = data.allIds;
 var initials = data.initials;
 
-var othello = function() {
-	this.grid = new createGrid(6,6,'button',{enabled: true, value: 'empty'});
-	this.allIds = allIds;
+var othello = function(rows,cols,attributes) {
+	var allAttributes = attributes || {};
+	allAttributes.enabled = 'true';
+	allAttributes.value = 'empty';
+	this.grid = new createGrid(rows,cols,'button',allAttributes);
+	this.allIds = Object.keys(this.grid).filter(function(id){
+		return !(id.match('CRNL'));
+	});
 	this.player = 'B';
 };
 
@@ -59,11 +63,11 @@ othello.prototype = {
 	},
 	declareWinner : function() {
 		var game = this;
-		var whites = allIds.reduce(function(carry,id){
+		var whites = this.allIds.reduce(function(carry,id){
 			game.grid[id].value == 'W' && carry++;
 			return carry;
 		},0);
-		var blacks = allIds.reduce(function(carry,id){
+		var blacks = this.allIds.reduce(function(carry,id){
 			game.grid[id].value == 'B' && carry++;
 			return carry;
 		},0)

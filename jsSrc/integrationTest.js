@@ -8,17 +8,55 @@
 var assert = require('chai').assert;
 var othello = require('./integration.js').othello;
 var game;
-var allFieldIds = require('./data.js').allIds;
+
+describe("grid functionality",function() {
+	describe("grid for 2x2 game with onClick attribute",function(){
+		var rows = 2, cols = 2;
+		var attributes = {'onClick':'update()'};
+		game = new othello(rows,cols,attributes);
+
+		it("grid should contain 4 elements",function() {
+			var gridLength = Object.keys(game.grid).length-rows;
+			assert.equal(gridLength,4);
+		})
+		it("allIds should contain allbutton ids [1,1], [1,2], [2,1], [2,2] ",function() {
+			var buttonIds = ['[1,1]','[1,2]','[2,1]','[2,2]'];
+			assert.deepEqual(game.allIds,buttonIds);
+		})
+		it("grid elements should have unique ids in stringified co-ordinate format",function() {
+			var gridIds = Object.keys(game.grid);
+			var checkFormat = function(id){return id.match(/\[[0-9]+\,[0-9]+\]/);};
+			assert.ok(gridIds.every(checkFormat));
+		})
+		it("grid elements should contain default attributes {'value: empty', 'enabled:true', id: #id, tag: 'button'}",function() {
+			var checkDefaults = function(id){
+				var element = game.grid[id];
+				return (element.value == 'empty') && element.enabled && (element.id == id) && (element.tag == 'button');
+			};
+			assert.ok(game.allIds.every(checkDefaults));
+		})
+		it("grid elements should contain given attributes also 'onClick:update()'", function() {
+			var checkGiven = function(id){return game.grid[id]['onClick'] == 'update()'; };
+			assert.ok(game.allIds.every(checkGiven));
+		})
+		it("the number of 'CRNL' elements should equals to the number of rows", function(){
+			var crnls = Object.keys(game.grid).reduce(function(count,id){
+				if(id.match('CRNL')) count++;
+				return count;
+			},0);
+			assert.ok(rows,crnls);
+		})
+
+	});
+});
 
 describe('Othello', function() {
 	beforeEach(function() {
-		game = new othello();
+		game = new othello(6,6);
 		game.start();
 	});
 	describe('start', function() {
 		it("should initialize the game with 3,3 = w 3,4 = b 4,3 = b 4,4 = w", function() {
-			game = new othello();
-			game.start();
 			assert.equal(game.grid['[3,3]'].value, 'W');
 			assert.equal(game.grid['[3,4]'].value, 'B');
 			assert.equal(game.grid['[4,3]'].value, 'B');
@@ -55,7 +93,7 @@ describe('Othello', function() {
 			assert.ok(game.toBeContinued());
 		})
 		it("should return false when there is no valid move", function() {
-			allFieldIds.forEach(function(field){game.grid[field].enabled = false });
+			game.allIds.forEach(function(field){game.grid[field].enabled = false });
 			assert.notOk(game.toBeContinued());
 		})
 	})
