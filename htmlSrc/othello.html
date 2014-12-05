@@ -1,0 +1,13 @@
+<html>
+<head>
+	<title>Othello</title>
+	<link rel="stylesheet" type="text/css" href="othello.css">
+	<script type="text/javascript" src="createGrid.js"></script>
+	<script type="text/javascript">
+	var grid = new createGrid(8, 8, 'button', {class:'button',onclick:'update(id)'});
+	</script>
+	<script type="text/javascript" src="../jsSrc/othello.js"></script>
+</head>
+<body onload="setGrid(this.document.body, grid); initiate(this.document)">
+</body>
+</html>

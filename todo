@@ -1,0 +1,37 @@
+schaffold{
+	othello.html, othello.css, othello.js, othelloTDD.js, git bash, sublime, runtest.js
+}
+done develope the design{
+	get grid using buttons //re done
+	create class for buttons in css
+}
+start the game{
+	initialize the field
+	start with balck
+	updating
+}
+updating done by referee{
+	move validator{
+		finds number of out flanks and validates accordingly
+		// predicate for accepting players' move
+		}
+	placer{
+		// placing the coin
+		}
+	find out flanks{
+		// gives the list of vulnerables
+		}
+	attacker{
+		// attacks the vulnerables
+		}
+	flipper{
+		// kills a single vulnerable
+		}
+	change the player{}
+	to be continued{
+		find all the possibility of outflanking anywhere as white
+		find all the possibility of outflanking anywhere as black
+		when no outflank is available determines the winner
+	}
+
+}
