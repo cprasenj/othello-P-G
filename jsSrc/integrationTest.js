@@ -11,12 +11,16 @@ var game;
 
 describe("grid functionality",function() {
 	describe("grid for 2x2 game with onClick attribute",function(){
-		var rows = 2, cols = 2;
+		var size = 2;
 		var attributes = {'onClick':'update()'};
-		game = new othello(rows,cols,attributes);
+		game = new othello(size,attributes);
 
+		it("grid should accept only size of even number",function() {
+			assert.notOk(Object.keys(new othello(3)).length);
+			assert.ok(Object.keys(new othello(8)).length);
+		});
 		it("grid should contain 4 elements",function() {
-			var gridLength = Object.keys(game.grid).length-rows;
+			var gridLength = Object.keys(game.grid).length-size;
 			assert.equal(gridLength,4);
 		})
 		it("allIds should contain allbutton ids [1,1], [1,2], [2,1], [2,2] ",function() {
@@ -44,7 +48,15 @@ describe("grid functionality",function() {
 				if(id.match('CRNL')) count++;
 				return count;
 			},0);
-			assert.ok(rows,crnls);
+			assert.ok(size,crnls);
+		})
+		it("the initials should contain the central four elements ids ", function(){
+			var initials = [
+				{id:'[1,1]',value:'W'},
+				{id:'[1,2]',value:'B'},
+				{id:'[2,1]',value:'B'},
+				{id:'[2,2]',value:'W'}];
+			assert.deepEqual(initials,game.initials);
 		})
 
 	});
@@ -52,7 +64,7 @@ describe("grid functionality",function() {
 
 describe('Othello', function() {
 	beforeEach(function() {
-		game = new othello(6,6);
+		game = new othello(6);
 		game.start();
 	});
 	describe('start', function() {

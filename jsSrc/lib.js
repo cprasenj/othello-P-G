@@ -11,7 +11,7 @@ var lib = {};
 exports.lib = lib;
 
 var directions = [[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]];
-var idParser = function(id,offSet) {
+lib.idParser = function(id,offSet) {
 	var id_ = JSON.parse(id);
 	return JSON.stringify([
 		id_[0]+offSet[0],
@@ -23,7 +23,7 @@ lib.findNeighbours = function(grid,id,player) {
 	var allNeighbours = [];
 	directions.forEach(function(direction) {
 		var neighbour = {};
-		var nId = idParser(id,direction);
+		var nId = lib.idParser(id,direction);
 		if(grid[nId] && grid[nId].value != 'empty' && grid[nId].value != player){
 			neighbour.id = nId;
 			neighbour.direction = direction;
@@ -36,7 +36,7 @@ lib.findNeighbours = function(grid,id,player) {
 var getNeighbour = function(neighbour) {
 	var id = neighbour.id;
 	var offSet = neighbour.direction;
-	var nextId = idParser(id,offSet);
+	var nextId = lib.idParser(id,offSet);
 	var next = {
 		id: nextId,
 		direction: offSet

@@ -1,23 +1,35 @@
 var createGrid = require('./createGrid.js').createGrid;
 var lib = require('./lib.js').lib;
-var data = require('./data.js');
-var initials = data.initials;
 
-var othello = function(rows,cols,attributes) {
+var findInitials = function(size){
+	var offsets = [
+		{o:[0,0],v:'W'},
+		{o:[0,1],v:'B'},
+		{o:[1,0],v:'B'},
+		{o:[1,1],v:'W'}];
+	var centre = JSON.stringify([size/2,size/2]);
+	return offsets.map(function(offset){
+		return {id: lib.idParser(centre,offset.o), value: offset.v};
+	});
+};
+
+var othello = function(size,attributes) {
+	if(size % 2 != 0) return false;
 	var allAttributes = attributes || {};
 	allAttributes.enabled = 'true';
 	allAttributes.value = 'empty';
-	this.grid = new createGrid(rows,cols,'button',allAttributes);
+	this.grid = new createGrid(size,size,'button',allAttributes);
 	this.allIds = Object.keys(this.grid).filter(function(id){
 		return !(id.match('CRNL'));
 	});
 	this.player = 'B';
+	this.initials = findInitials(size);
 };
 
 othello.prototype = {
 	start : function() {
 		var grid = this.grid;
-		initials.forEach(function(initial) {
+		this.initials.forEach(function(initial) {
 			grid[initial.id].value = initial.value;
 			grid[initial.id].enabled = false;
 		});
@@ -74,6 +86,5 @@ othello.prototype = {
 		return (blacks > whites) ? "B" : (whites > blacks) ? "W" : "tie";
 	}
 };
-
 
 exports.othello = othello;
