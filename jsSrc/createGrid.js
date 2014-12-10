@@ -41,11 +41,10 @@ createGrid.prototype = {
 			return '<'+element['tag']+' '+elementAttributes+'>'+'O'+'</'+element['tag']+'>';
 		}).join(' ');
 		return innerHTML.replace(/<CRNL >O<\/CRNL>/g,'<br>');
+	},
+	setGrid: function (htmlParentElement, grid){
+		htmlParentElement.innerHTML = grid.asHtml();
 	}
-};
-
-var setGrid = function (htmlParentElement, grid){
-	htmlParentElement.innerHTML = grid.asHtml();
 };
 
 exports.createGrid = createGrid;

@@ -6,9 +6,9 @@
 //	6,1	6,2	6,3	6,4	6,5	6,6
 // grid , 3,2 B > 3,3
 
-var util = require('./util.js').util;
+// var util = require('./util.js').util;
 var lib = {};
-exports.lib = lib;
+// exports.lib = lib;
 
 var directions = [[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1],[-1,-1]];
 lib.idParser = function(id,offSet) {
@@ -74,10 +74,4 @@ lib.findOutflank = function(grid,id,player) {
 		});
 	});
 	return util.flatArray(outflanks);
-};
-
-lib.isValidMove = function(grid,id,player) {
-	var enabled = grid[id].enabled;
-	var outflanks = lib.findOutflank(grid,id,player);
-	return enabled && outflanks.length;
 };

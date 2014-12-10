@@ -1,5 +1,5 @@
-var createGrid = require('./createGrid.js').createGrid;
-var lib = require('./lib.js').lib;
+// var createGrid = require('./createGrid.js').createGrid;
+// var lib = require('./lib.js').lib;
 
 var findInitials = function(size){
 	var offsets = [
@@ -34,15 +34,14 @@ othello.prototype = {
 			grid[initial.id].enabled = false;
 		});
 	},
-	findOutflank : function(id,player) {
-		return lib.findOutflank(this.grid,id,player);
+	findOutflank : function(id) {
+		return lib.findOutflank(this.grid,id,this.player);
 	},
-	isValidMove : function(id,player,game) {
+	isValidMove : function(id,game) {
 		var thiS = game || this;
-		return lib.isValidMove(thiS.grid,id,player);
-		// var enabled = thiS.grid[id].enabled;
-		// var outflanks = thiS.findOutflank(id,player);
-		// return enabled && outflanks.length;
+		var enabled = thiS.grid[id].enabled;
+		var outflanks = thiS.findOutflank(id);
+		return enabled && outflanks.length;
 	},
 	changePlayer : function() {
 		this.player = (this.player == 'B')? 'W' : 'B';
@@ -58,33 +57,22 @@ othello.prototype = {
 		});
 	},
 	attacker : function(id) {
-		this.flipper(this.findOutflank(id,this.player));
+		this.flipper(this.findOutflank(id));
 	},
 	update : function(id) {
 		var enabled = this.grid[id].enabled;
-		if(this.isValidMove(id,this.player) && enabled){
+		if(this.isValidMove(id) && enabled){
 			this.placer(id);
 			this.attacker(id);
 			this.changePlayer();
 		}
 	},
-	isThereAValidMove : function(player) {
+	toBeContinued : function() {
 		var game = this;
 		var possibility = game.allIds.some(function(id){
-			return game.isValidMove(id,player,game);
+			return game.isValidMove(id,game);
 		});
-		return (this.player == player) && possibility;
-	},
-	toBeContinued : function() {
-		return this.isThereAValidMove('B') || this.isThereAValidMove('W');
-		// // var game = this;
-		// // var Bpossibility = game.allIds.some(function(id){
-		// // 	return game.isValidMove(id,'B',game);
-		// // });
-		// // var Wpossibility = game.allIds.some(function(id){
-		// // 	return game.isValidMove(id,'W',game);
-		// // });
-		// return Wpossibility && Bpossibility;
+		return possibility;
 	},
 	declareWinner : function() {
 		var game = this;
@@ -100,4 +88,4 @@ othello.prototype = {
 	}
 };
 
-exports.othello = othello;
+// exports.othello = othello;

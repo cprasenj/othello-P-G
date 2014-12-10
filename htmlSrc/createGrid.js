@@ -12,9 +12,9 @@ var createGrid = function (totalRows, totalCols, element, attributes){
 			grid[returnTag+id] = {tag: returnTag};
 			return;
 		}
-		grid[element+id] = copyObject(attributes);
-		grid[element+id].id = id;
-		grid[element+id].tag = element;
+		grid[id] = copyObject(attributes);
+		grid[id].id = id;
+		grid[id].tag = element;
 	};
 	var createRow = function (rowno,cols){
 		if(totalCols < cols) return createCell(rowno,cols,'CRNL');
@@ -35,19 +35,17 @@ createGrid.prototype = {
 		var grid = this;
 		var innerHTML = Object.keys(grid).map(function (elementName){
 			var element = grid[elementName];
+			console.log(element);
 			var elementAttributes = Object.keys(element).map(function (att){
 				return (att == 'tag')? '' : att+'="'+element[att]+'"';
 			}).join(' ');
 			return '<'+element['tag']+' '+elementAttributes+'>'+'O'+'</'+element['tag']+'>';
 		}).join(' ');
 		return innerHTML.replace(/<CRNL >O<\/CRNL>/g,'<br>');
+	},
+	setGrid: function (htmlParentElement, grid){
+		htmlParentElement.innerHTML = grid.asHtml();
 	}
 };
 
-var setGrid = function (htmlParentElement, grid){
-	htmlParentElement.innerHTML = grid.asHtml();
-};
-
-// var grid = new createGrid(4,2,'p',{hi:'on'});
-// console.log(grid);
-// console.log(grid.asHtml());
+// exports.createGrid = createGrid;
